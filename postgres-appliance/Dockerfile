@@ -1,6 +1,7 @@
 ARG PGVERSION=12
 ARG TIMESCALEDB=1.6.0
 ARG TIMESCALEDB_LEGACY=$TIMESCALEDB
+ARG TIMESCALEDB_APACHE_ONLY=true
 ARG DEMO=false
 ARG COMPRESS=false
 
@@ -181,7 +182,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
                 cd timescaledb \
                 && if [ "$version" != "9.6" ]; then git checkout $TIMESCALEDB; fi \
                 && rm -fr build \
-                && ./bootstrap -DAPACHE_ONLY=1 -DSEND_TELEMETRY_DEFAULT=NO -DREGRESS_CHECKS=OFF \
+                && ./bootstrap -DAPACHE_ONLY=$TIMESCALEDB_APACHE_ONLY -DSEND_TELEMETRY_DEFAULT=NO -DREGRESS_CHECKS=OFF \
                 && make -C build install \
                 && strip /usr/lib/postgresql/$version/lib/timescaledb*.so \
                 && cd ..; \
